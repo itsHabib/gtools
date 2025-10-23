@@ -125,3 +125,71 @@ impl Ord for Edge {
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub(crate) struct NodeId(pub(crate) u32);
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_bridges_simple() {
+        let mut g = Graph::new(3);
+        g.add_edge(Edge { u: NodeId(0), v: NodeId(1), weight: 1.0 });
+        g.add_edge(Edge { u: NodeId(1), v: NodeId(2), weight: 1.0 });
+        
+        let bridges = g.bridges();
+        assert_eq!(bridges.len(), 2);
+    }
+
+    #[test]
+    fn test_bridges_cycle() {
+        let mut g = Graph::new(4);
+        g.add_edge(Edge { u: NodeId(0), v: NodeId(1), weight: 1.0 });
+        g.add_edge(Edge { u: NodeId(1), v: NodeId(2), weight: 1.0 });
+        g.add_edge(Edge { u: NodeId(2), v: NodeId(3), weight: 1.0 });
+        g.add_edge(Edge { u: NodeId(3), v: NodeId(0), weight: 1.0 });
+        
+        let bridges = g.bridges();
+        assert_eq!(bridges.len(), 0);
+    }
+
+    #[test]
+    fn test_bridges_tail() {
+        let mut g = Graph::new(5);
+        g.add_edge(Edge { u: NodeId(0), v: NodeId(1), weight: 1.0 });
+        g.add_edge(Edge { u: NodeId(1), v: NodeId(2), weight: 1.0 });
+        g.add_edge(Edge { u: NodeId(2), v: NodeId(0), weight: 1.0 });
+        g.add_edge(Edge { u: NodeId(2), v: NodeId(3), weight: 1.0 });
+        g.add_edge(Edge { u: NodeId(3), v: NodeId(4), weight: 1.0 });
+        
+        let bridges = g.bridges();
+        assert_eq!(bridges.len(), 2);
+    }
+
+    #[test]
+    fn test_bridges_disconnected_components() {
+        let mut g = Graph::new(6);
+        g.add_edge(Edge { u: NodeId(0), v: NodeId(1), weight: 1.0 });
+        g.add_edge(Edge { u: NodeId(1), v: NodeId(2), weight: 1.0 });
+        g.add_edge(Edge { u: NodeId(3), v: NodeId(4), weight: 1.0 });
+        g.add_edge(Edge { u: NodeId(4), v: NodeId(5), weight: 1.0 });
+        
+        let bridges = g.bridges();
+        assert_eq!(bridges.len(), 4);
+    }
+
+    #[test]
+    fn test_bridges_single_edge() {
+        let mut g = Graph::new(2);
+        g.add_edge(Edge { u: NodeId(0), v: NodeId(1), weight: 1.0 });
+        
+        let bridges = g.bridges();
+        assert_eq!(bridges.len(), 1);
+    }
+
+    #[test]
+    fn test_bridges_no_edges() {
+        let g = Graph::new(3);
+        let bridges = g.bridges();
+        assert_eq!(bridges.len(), 0);
+    }
+}
