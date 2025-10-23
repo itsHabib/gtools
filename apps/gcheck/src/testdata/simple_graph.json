@@ -1,0 +1,9 @@
+{
+  "nodes": ["a", "b", "c"],
+  "edges": [
+    { "from": "a", "to": "b", "latency_ms": 10.0 },
+    { "from": "b", "to": "c", "latency_ms": 20.0 }
+  ]
+}
+
+

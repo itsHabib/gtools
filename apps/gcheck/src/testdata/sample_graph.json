@@ -1,0 +1,11 @@
+{
+  "nodes": ["api", "auth", "db", "cache"],
+  "edges": [
+    { "from": "api", "to": "auth", "latency_ms": 5.2 },
+    { "from": "auth", "to": "db", "latency_ms": 3.1 },
+    { "from": "api", "to": "cache", "latency_ms": 7.4 },
+    { "from": "cache", "to": "db", "latency_ms": 2.3 }
+  ]
+}
+
+
