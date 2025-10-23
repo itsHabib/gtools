@@ -1,5 +1,6 @@
 [workspace]
 members = [
-    "apps/gcheck"
+    "apps/gcheck",
+    "crates/graphs"
 ]
 resolver = "2"
