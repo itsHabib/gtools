@@ -2,8 +2,8 @@ use crate::dsu::DisjointSet;
 use crate::graph::{Edge, Graph};
 
 pub struct Mst {
-    pub(crate) edges: Vec<Edge>,
-    pub(crate) total_weight: f32,
+    pub edges: Vec<Edge>,
+    pub total_weight: f32,
 }
 
 pub fn kruskal(g: &Graph) -> Mst {

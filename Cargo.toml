@@ -1,6 +1,16 @@
 [workspace]
 members = [
     "apps/gcheck",
+    "apps/gt-connect",
     "crates/graphs"
 ]
 resolver = "2"
+
+[workspace.dependencies]
+anyhow = "1.0"
+clap = { version = "4.5", features = ["derive"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+thiserror = "2.0"
+csv = "1.3"
+tempfile = "3.8"
