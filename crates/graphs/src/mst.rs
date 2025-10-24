@@ -1,11 +1,14 @@
 use crate::dsu::DisjointSet;
 use crate::graph::{Edge, Graph};
 
+/// A minimum spanning tree of an undirected graph.
+/// Contains the edges that form the MST and their total weight.
 pub struct Mst {
     pub edges: Vec<Edge>,
     pub total_weight: f32,
 }
 
+/// Computes a minimum spanning tree using Kruskal's algorithm.
 pub fn kruskal(g: &Graph) -> Mst {
     let mut edges = g.edges();
     let n = g.size();

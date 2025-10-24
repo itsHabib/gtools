@@ -1,9 +1,11 @@
+/// A disjoint-set data structure.
 pub(crate) struct DisjointSet {
     parent: Vec<usize>,
     size: Vec<usize>,
 }
 
 impl DisjointSet {
+    /// Creates a new disjoint-set structure with n elements.
     pub fn new(n: usize) -> Self {
         Self {
             parent: (0..n).collect(),
@@ -11,6 +13,9 @@ impl DisjointSet {
         }
     }
 
+    /// Finds the representative (root) of the set containing element v.
+    /// Uses path compression to flatten the tree structure, making future
+    /// finds faster. Panics if v is out of bounds.
     pub fn find(&mut self, v: usize) -> usize {
         assert!(v < self.parent.len(), "{v} not in bounds");
 
@@ -26,6 +31,10 @@ impl DisjointSet {
         self.parent[v]
     }
 
+    /// Unites the sets containing elements a and b.
+    /// Uses union-by-size to keep trees balanced. Returns true if a and b
+    /// were in different sets (and have now been merged), false if they
+    /// were already in the same set.
     pub fn union(&mut self, a: usize, b: usize) -> bool {
         let ra = self.find(a);
         let rb = self.find(b);

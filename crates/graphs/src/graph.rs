@@ -2,6 +2,9 @@ use std::cmp::min;
 use std::collections::HashSet;
 use std::hash::Hash;
 
+/// An undirected weighted graph represented as an edge list.
+/// Nodes are identified by integers 0..n-1 where n is the total number of nodes.
+/// Edges are stored as a list and can be converted to an adjacency list on demand.
 #[derive(Debug, Clone)]
 pub struct Graph {
     nodes: usize,
@@ -9,6 +12,7 @@ pub struct Graph {
 }
 
 impl Graph {
+    /// Creates a new empty graph with the specified number of nodes.
     pub fn new(nodes: usize) -> Graph {
         Graph{
             nodes,
@@ -16,6 +20,10 @@ impl Graph {
         }
     }
 
+    /// Finds critical components using Tarjan's algorithm.
+    /// Returns a tuple of (articulation points, bridges) where:
+    /// - Articulation points are nodes whose removal disconnects the graph
+    /// - Bridges are edges whose removal disconnects the graph
     pub fn critical_components(&self) -> (Vec<NodeId>, Vec<(NodeId, NodeId)>) {
         let adj = self.adjacency_list();
         let mut disc: Vec<Option<u32>> = vec![None; self.nodes];
@@ -87,19 +95,26 @@ impl Graph {
         (points.into_iter().collect(), bridges)
     }
 
+    /// Adds an edge to the graph.
+    /// Panics if either node ID is out of bounds.
     pub fn add_edge(&mut self, edge: Edge) {
         assert!(edge.u.0 < self.nodes as u32 && edge.v.0 < self.nodes as u32, "edge vertices out of bounds");
         self.edges.push(edge);
     }
 
+    /// Returns a copy of all edges in the graph.
     pub fn edges(&self) -> Vec<Edge> {
         self.edges.clone()
     }
 
+    /// Returns the number of nodes in the graph.
     pub fn size(&self) -> usize {
         self.nodes
     }
 
+    /// Builds an adjacency list representation for efficient neighbor queries.
+    /// For each node, returns a list of its neighbors. Since the graph is undirected,
+    /// each edge (u,v) creates entries in both adj[u] and adj[v].
     fn adjacency_list(&self) -> Vec<Vec<NodeId>> {
         let mut adj = vec![Vec::new(); self.nodes];
         for e in &self.edges {
@@ -111,7 +126,7 @@ impl Graph {
     }
 }
 
-
+/// An undirected weighted edge connecting two nodes.
 #[derive(Debug, Clone, Copy)]
 pub struct Edge {
     pub u: NodeId,
@@ -139,6 +154,8 @@ impl Ord for Edge {
     }
 }
 
+/// A unique identifier for a node in the graph.
+/// Node IDs must be in the range 0..n-1 where n is the total number of nodes.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct NodeId(pub u32);
 

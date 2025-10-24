@@ -4,6 +4,7 @@ use std::fs::File;
 use std::path::Path;
 use thiserror::Error;
 
+/// Errors that can occur during graph I/O operations.
 #[derive(Error, Debug)]
 pub enum IoError {
     #[error("Failed to read file: {0}")]
@@ -22,6 +23,23 @@ pub enum IoError {
     InvalidWeight(String),
 }
 
+/// Loads an undirected graph from a CSV file.
+/// 
+/// The CSV format expects three columns: u, v, weight where u and v are
+/// node IDs (integers) and weight is a floating-point number. The file
+/// may optionally have a header row (automatically detected).
+/// 
+/// Node IDs should be non-negative integers. The graph will be sized to
+/// accommodate the maximum node ID found, so nodes don't need to be
+/// contiguous (though this may waste memory for sparse graphs).
+/// 
+/// # Example CSV format
+/// ```csv
+/// u,v,weight
+/// 0,1,1.5
+/// 1,2,2.0
+/// 2,0,1.0
+/// ```
 pub fn load_csv<P: AsRef<Path>>(path: P) -> Result<Graph, IoError> {
     let file = File::open(path)?;
     let mut reader = ReaderBuilder::new()
