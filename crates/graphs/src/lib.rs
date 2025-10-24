@@ -1,3 +1,4 @@
 mod dsu;
-mod graph;
-mod mst;
+pub mod graph;
+pub mod mst;
+pub mod io;

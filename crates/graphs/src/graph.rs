@@ -113,10 +113,10 @@ impl Graph {
 
 
 #[derive(Debug, Clone, Copy)]
-pub(crate) struct Edge {
-    pub(crate) u: NodeId,
-    pub(crate) v: NodeId,
-    pub(crate) weight: f32,
+pub struct Edge {
+    pub u: NodeId,
+    pub v: NodeId,
+    pub weight: f32,
 }
 
 impl PartialEq<Self> for Edge {
@@ -140,7 +140,7 @@ impl Ord for Edge {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
-pub(crate) struct NodeId(pub(crate) u32);
+pub struct NodeId(pub u32);
 
 #[cfg(test)]
 mod tests {
