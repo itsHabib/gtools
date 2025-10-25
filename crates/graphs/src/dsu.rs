@@ -19,7 +19,7 @@ impl DisjointSet {
     pub fn find(&mut self, v: usize) -> usize {
         assert!(v < self.parent.len(), "{v} not in bounds");
 
-        if  v >= self.parent.len() {
+        if v >= self.parent.len() {
             return v;
         }
 

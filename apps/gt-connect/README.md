@@ -106,3 +106,4 @@ See `testdata/` directory for example graphs:
 - **MST**: Kruskal's algorithm with Union-Find (DSU)
 - **Bridges**: Tarjan's algorithm using DFS with low-link values
 - **Articulation Points**: Tarjan's algorithm (variation for nodes)
+

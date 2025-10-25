@@ -14,7 +14,7 @@ pub struct Graph {
 impl Graph {
     /// Creates a new empty graph with the specified number of nodes.
     pub fn new(nodes: usize) -> Graph {
-        Graph{
+        Graph {
             nodes,
             edges: Vec::new(),
         }
@@ -40,7 +40,7 @@ impl Graph {
             disc: &mut Vec<Option<u32>>,
             low: &mut Vec<u32>,
             points: &mut HashSet<NodeId>,
-            bridges: &mut Vec<(NodeId,NodeId)>,
+            bridges: &mut Vec<(NodeId, NodeId)>,
             time: &mut u32,
         ) {
             disc[u] = Some(*time);
@@ -66,7 +66,9 @@ impl Graph {
                         }
 
                         // u is critical to v connectivity
-                        if low[v_i] >= disc[u].expect("disc[u] already initialized above")  && parent[u].is_some() {
+                        if low[v_i] >= disc[u].expect("disc[u] already initialized above")
+                            && parent[u].is_some()
+                        {
                             points.insert(NodeId(u as u32));
                         }
                     }
@@ -86,10 +88,19 @@ impl Graph {
         for n in 0..self.nodes {
             if disc[n].is_some() {
                 // already visited
-                continue
+                continue;
             }
 
-            dfs(n, &adj, &mut parent, &mut disc, &mut low, &mut points, &mut bridges, &mut time);
+            dfs(
+                n,
+                &adj,
+                &mut parent,
+                &mut disc,
+                &mut low,
+                &mut points,
+                &mut bridges,
+                &mut time,
+            );
         }
 
         (points.into_iter().collect(), bridges)
@@ -98,7 +109,10 @@ impl Graph {
     /// Adds an edge to the graph.
     /// Panics if either node ID is out of bounds.
     pub fn add_edge(&mut self, edge: Edge) {
-        assert!(edge.u.0 < self.nodes as u32 && edge.v.0 < self.nodes as u32, "edge vertices out of bounds");
+        assert!(
+            edge.u.0 < self.nodes as u32 && edge.v.0 < self.nodes as u32,
+            "edge vertices out of bounds"
+        );
         self.edges.push(edge);
     }
 
@@ -150,7 +164,9 @@ impl PartialOrd for Edge {
 
 impl Ord for Edge {
     fn cmp(&self, other: &Self) -> std::cmp::Ordering {
-        self.weight.partial_cmp(&other.weight).unwrap_or(std::cmp::Ordering::Equal)
+        self.weight
+            .partial_cmp(&other.weight)
+            .unwrap_or(std::cmp::Ordering::Equal)
     }
 }
 
@@ -166,9 +182,17 @@ mod tests {
     #[test]
     fn test_simple_chain() {
         let mut g = Graph::new(3);
-        g.add_edge(Edge { u: NodeId(0), v: NodeId(1), weight: 1.0 });
-        g.add_edge(Edge { u: NodeId(1), v: NodeId(2), weight: 1.0 });
-        
+        g.add_edge(Edge {
+            u: NodeId(0),
+            v: NodeId(1),
+            weight: 1.0,
+        });
+        g.add_edge(Edge {
+            u: NodeId(1),
+            v: NodeId(2),
+            weight: 1.0,
+        });
+
         let (aps, bridges) = g.critical_components();
         assert_eq!(bridges.len(), 2);
         // node 1 is articulation point
@@ -178,11 +202,27 @@ mod tests {
     #[test]
     fn test_cycle_no_critical() {
         let mut g = Graph::new(4);
-        g.add_edge(Edge { u: NodeId(0), v: NodeId(1), weight: 1.0 });
-        g.add_edge(Edge { u: NodeId(1), v: NodeId(2), weight: 1.0 });
-        g.add_edge(Edge { u: NodeId(2), v: NodeId(3), weight: 1.0 });
-        g.add_edge(Edge { u: NodeId(3), v: NodeId(0), weight: 1.0 });
-        
+        g.add_edge(Edge {
+            u: NodeId(0),
+            v: NodeId(1),
+            weight: 1.0,
+        });
+        g.add_edge(Edge {
+            u: NodeId(1),
+            v: NodeId(2),
+            weight: 1.0,
+        });
+        g.add_edge(Edge {
+            u: NodeId(2),
+            v: NodeId(3),
+            weight: 1.0,
+        });
+        g.add_edge(Edge {
+            u: NodeId(3),
+            v: NodeId(0),
+            weight: 1.0,
+        });
+
         let (aps, bridges) = g.critical_components();
         assert_eq!(bridges.len(), 0);
         assert_eq!(aps.len(), 0);
@@ -191,12 +231,32 @@ mod tests {
     #[test]
     fn test_cycle_with_tail() {
         let mut g = Graph::new(5);
-        g.add_edge(Edge { u: NodeId(0), v: NodeId(1), weight: 1.0 });
-        g.add_edge(Edge { u: NodeId(1), v: NodeId(2), weight: 1.0 });
-        g.add_edge(Edge { u: NodeId(2), v: NodeId(0), weight: 1.0 });
-        g.add_edge(Edge { u: NodeId(2), v: NodeId(3), weight: 1.0 });
-        g.add_edge(Edge { u: NodeId(3), v: NodeId(4), weight: 1.0 });
-        
+        g.add_edge(Edge {
+            u: NodeId(0),
+            v: NodeId(1),
+            weight: 1.0,
+        });
+        g.add_edge(Edge {
+            u: NodeId(1),
+            v: NodeId(2),
+            weight: 1.0,
+        });
+        g.add_edge(Edge {
+            u: NodeId(2),
+            v: NodeId(0),
+            weight: 1.0,
+        });
+        g.add_edge(Edge {
+            u: NodeId(2),
+            v: NodeId(3),
+            weight: 1.0,
+        });
+        g.add_edge(Edge {
+            u: NodeId(3),
+            v: NodeId(4),
+            weight: 1.0,
+        });
+
         let (aps, bridges) = g.critical_components();
         // (2,3) and (3,4)
         assert_eq!(bridges.len(), 2);
@@ -207,11 +267,27 @@ mod tests {
     #[test]
     fn test_disconnected() {
         let mut g = Graph::new(6);
-        g.add_edge(Edge { u: NodeId(0), v: NodeId(1), weight: 1.0 });
-        g.add_edge(Edge { u: NodeId(1), v: NodeId(2), weight: 1.0 });
-        g.add_edge(Edge { u: NodeId(3), v: NodeId(4), weight: 1.0 });
-        g.add_edge(Edge { u: NodeId(4), v: NodeId(5), weight: 1.0 });
-        
+        g.add_edge(Edge {
+            u: NodeId(0),
+            v: NodeId(1),
+            weight: 1.0,
+        });
+        g.add_edge(Edge {
+            u: NodeId(1),
+            v: NodeId(2),
+            weight: 1.0,
+        });
+        g.add_edge(Edge {
+            u: NodeId(3),
+            v: NodeId(4),
+            weight: 1.0,
+        });
+        g.add_edge(Edge {
+            u: NodeId(4),
+            v: NodeId(5),
+            weight: 1.0,
+        });
+
         let (aps, bridges) = g.critical_components();
         // all edges
         assert_eq!(bridges.len(), 4);
@@ -222,8 +298,12 @@ mod tests {
     #[test]
     fn test_single_edge() {
         let mut g = Graph::new(2);
-        g.add_edge(Edge { u: NodeId(0), v: NodeId(1), weight: 1.0 });
-        
+        g.add_edge(Edge {
+            u: NodeId(0),
+            v: NodeId(1),
+            weight: 1.0,
+        });
+
         let (aps, bridges) = g.critical_components();
         assert_eq!(bridges.len(), 1);
         // no articulation points (can't disconnect with only 2 nodes)
@@ -233,11 +313,27 @@ mod tests {
     #[test]
     fn test_root_with_two_children() {
         let mut g = Graph::new(5);
-        g.add_edge(Edge { u: NodeId(0), v: NodeId(1), weight: 1.0 });
-        g.add_edge(Edge { u: NodeId(1), v: NodeId(2), weight: 1.0 });
-        g.add_edge(Edge { u: NodeId(0), v: NodeId(3), weight: 1.0 });
-        g.add_edge(Edge { u: NodeId(3), v: NodeId(4), weight: 1.0 });
-        
+        g.add_edge(Edge {
+            u: NodeId(0),
+            v: NodeId(1),
+            weight: 1.0,
+        });
+        g.add_edge(Edge {
+            u: NodeId(1),
+            v: NodeId(2),
+            weight: 1.0,
+        });
+        g.add_edge(Edge {
+            u: NodeId(0),
+            v: NodeId(3),
+            weight: 1.0,
+        });
+        g.add_edge(Edge {
+            u: NodeId(3),
+            v: NodeId(4),
+            weight: 1.0,
+        });
+
         let (aps, bridges) = g.critical_components();
         // all edges are bridges
         assert_eq!(bridges.len(), 4);

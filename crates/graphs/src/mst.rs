@@ -24,7 +24,7 @@ pub fn kruskal(g: &Graph) -> Mst {
         }
     }
 
-    Mst{
+    Mst {
         edges: span,
         total_weight,
     }
@@ -38,9 +38,21 @@ mod tests {
     #[test]
     fn test_triangle() {
         let mut g = Graph::new(3);
-        g.add_edge(Edge { u: NodeId(0), v: NodeId(1), weight: 1.0 });
-        g.add_edge(Edge { u: NodeId(1), v: NodeId(2), weight: 2.0 });
-        g.add_edge(Edge { u: NodeId(2), v: NodeId(0), weight: 3.0 });
+        g.add_edge(Edge {
+            u: NodeId(0),
+            v: NodeId(1),
+            weight: 1.0,
+        });
+        g.add_edge(Edge {
+            u: NodeId(1),
+            v: NodeId(2),
+            weight: 2.0,
+        });
+        g.add_edge(Edge {
+            u: NodeId(2),
+            v: NodeId(0),
+            weight: 3.0,
+        });
 
         let mst = kruskal(&g);
         assert_eq!(mst.total_weight, 3.0);
@@ -50,8 +62,16 @@ mod tests {
     #[test]
     fn test_disconnected() {
         let mut g = Graph::new(4);
-        g.add_edge(Edge { u: NodeId(0), v: NodeId(1), weight: 1.0 });
-        g.add_edge(Edge { u: NodeId(2), v: NodeId(3), weight: 2.0 });
+        g.add_edge(Edge {
+            u: NodeId(0),
+            v: NodeId(1),
+            weight: 1.0,
+        });
+        g.add_edge(Edge {
+            u: NodeId(2),
+            v: NodeId(3),
+            weight: 2.0,
+        });
 
         let mst = kruskal(&g);
         assert_eq!(mst.total_weight, 3.0);
@@ -61,11 +81,31 @@ mod tests {
     #[test]
     fn test_square_with_diagonal() {
         let mut g = Graph::new(4);
-        g.add_edge(Edge { u: NodeId(0), v: NodeId(1), weight: 1.0 });
-        g.add_edge(Edge { u: NodeId(1), v: NodeId(2), weight: 2.0 });
-        g.add_edge(Edge { u: NodeId(2), v: NodeId(3), weight: 3.0 });
-        g.add_edge(Edge { u: NodeId(3), v: NodeId(0), weight: 4.0 });
-        g.add_edge(Edge { u: NodeId(0), v: NodeId(2), weight: 5.0 });
+        g.add_edge(Edge {
+            u: NodeId(0),
+            v: NodeId(1),
+            weight: 1.0,
+        });
+        g.add_edge(Edge {
+            u: NodeId(1),
+            v: NodeId(2),
+            weight: 2.0,
+        });
+        g.add_edge(Edge {
+            u: NodeId(2),
+            v: NodeId(3),
+            weight: 3.0,
+        });
+        g.add_edge(Edge {
+            u: NodeId(3),
+            v: NodeId(0),
+            weight: 4.0,
+        });
+        g.add_edge(Edge {
+            u: NodeId(0),
+            v: NodeId(2),
+            weight: 5.0,
+        });
 
         let mst = kruskal(&g);
         assert_eq!(mst.total_weight, 6.0);

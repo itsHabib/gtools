@@ -245,4 +245,3 @@ fn print_json<T: Serialize>(output: &T) -> Result<()> {
     println!("{}", json);
     Ok(())
 }
-
