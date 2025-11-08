@@ -9,7 +9,7 @@ use std::process;
 
 /// Graph path analyzer - find shortest paths and bottlenecks in network graphs
 #[derive(Parser)]
-#[command(name = "gcheck")]
+#[command(name = "gt-path")]
 #[command(about = "Graph path analysis and simulation tool", long_about = None)]
 struct Cli {
     #[command(subcommand)]

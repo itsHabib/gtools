@@ -1,6 +1,6 @@
 [workspace]
 members = [
-    "apps/gcheck",
+    "apps/gt-path",
     "apps/gt-connect",
     "crates/graphs"
 ]

@@ -1,8 +1,8 @@
-# Graph Check - gcheck
+# Graph Tools: Path - gt-path
 
 **Graph path analysis and simulation tool**
 
-`gcheck` is a command-line tool for analyzing network graphs and finding optimal paths between nodes.
+`gt-path` is a command-line tool for analyzing network graphs and finding optimal paths between nodes.
 
 ## Features
 
@@ -23,7 +23,7 @@ cd gopt
 cargo build --release
 ```
 
-The binary will be at `target/release/gcheck`
+The binary will be at `target/release/gt-path`
 
 ## Usage
 
@@ -32,7 +32,7 @@ The binary will be at `target/release/gcheck`
 Find the shortest path between two nodes:
 
 ```bash
-gcheck path --graph graph.json --from api --to db
+gt-path path --graph graph.json --from api --to db
 ```
 
 Output:
@@ -48,7 +48,7 @@ Shortest Path:
 Get structured JSON output for scripting:
 
 ```bash
-gcheck path --graph graph.json --from api --to db --format json
+gt-path path --graph graph.json --from api --to db --format json
 ```
 
 Output:
@@ -69,7 +69,7 @@ Output:
 ### Short Flags
 
 ```bash
-gcheck path -g graph.json -f api -t db
+gt-path path -g graph.json -f api -t db
 ```
 
 ### SLO Checking
@@ -77,7 +77,7 @@ gcheck path -g graph.json -f api -t db
 Check if a path meets a Service Level Objective (maximum latency):
 
 ```bash
-gcheck slo --graph graph.json --from api --to db --max-latency 10
+gt-path slo --graph graph.json --from api --to db --max-latency 10
 ```
 
 Output (when SLO is met):
@@ -108,7 +108,7 @@ SLO Check:
 ### SLO Check with JSON
 
 ```bash
-gcheck slo --graph graph.json --from api --to db --max-latency 10 --format json
+gt-path slo --graph graph.json --from api --to db --max-latency 10 --format json
 ```
 
 Output:
@@ -137,7 +137,7 @@ Simulate "what-if" scenarios by modifying edge weights or dropping edges:
 
 ```bash
 # Override edge weight
-gcheck simulate --graph graph.json --from api --to db --override "auth:db:100"
+gt-path simulate --graph graph.json --from api --to db --override "auth:db:100"
 ```
 
 Output:
@@ -160,31 +160,31 @@ Impact: +1ms (slower)
 **Override edge weights:**
 ```bash
 # Single override
-gcheck simulate -g graph.json -f api -t db --override "auth:db:100"
+gt-path simulate -g graph.json -f api -t db --override "auth:db:100"
 
 # Multiple overrides (comma-separated)
-gcheck simulate -g graph.json -f api -t db --override "auth:db:100,api:cache:50"
+gt-path simulate -g graph.json -f api -t db --override "auth:db:100,api:cache:50"
 ```
 
 **Drop edges:**
 ```bash
 # Drop a single edge
-gcheck simulate -g graph.json -f api -t db --drop "auth:db"
+gt-path simulate -g graph.json -f api -t db --drop "auth:db"
 
 # Drop multiple edges (comma-separated)
-gcheck simulate -g graph.json -f api -t db --drop "auth:db,api:cache"
+gt-path simulate -g graph.json -f api -t db --drop "auth:db,api:cache"
 ```
 
 **Combine overrides and drops:**
 ```bash
-gcheck simulate -g graph.json -f api -t db \
+gt-path simulate -g graph.json -f api -t db \
   --override "api:auth:10,cache:db:1" \
   --drop "auth:cache"
 ```
 
 **JSON output for scripting:**
 ```bash
-gcheck simulate -g graph.json -f api -t db --override "auth:db:100" --format json
+gt-path simulate -g graph.json -f api -t db --override "auth:db:100" --format json
 ```
 
 Output:
@@ -218,7 +218,7 @@ Output:
 
 ## Input Format
 
-`gcheck` reads directed graphs in JSON format:
+`gt-path` reads directed graphs in JSON format:
 
 ```json
 {
@@ -242,7 +242,7 @@ Output:
 
 ## Exit Codes
 
-`gcheck` uses standard exit codes for automation:
+`gt-path` uses standard exit codes for automation:
 
 - `0` - Success (path found, SLO met)
 - `2` - No path exists between nodes
@@ -253,7 +253,7 @@ Output:
 
 ```bash
 # Check if path meets SLO
-gcheck slo -g graph.json -f api -t db --max-latency 100
+gt-path slo -g graph.json -f api -t db --max-latency 100
 
 case $? in
   0) echo "✓ SLO met" ;;
