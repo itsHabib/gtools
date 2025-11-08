@@ -4,6 +4,8 @@
 
 `gt-path` is a command-line tool for analyzing network graphs and finding optimal paths between nodes.
 
+> **Note:** This tool was previously [`gcheck`](https://github.com/itsHabib/gcheck) (now archived). It has been renamed to `gt-path`.
+
 ## Features
 
 - 🚀 **Fast shortest path finding** using Dijkstra's algorithm
